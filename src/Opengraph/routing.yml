@@ -1,0 +1,3 @@
+debug:
+    pattern: /
+    controller: Opengraph\Controller\Debug
