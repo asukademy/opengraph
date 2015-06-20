@@ -41,16 +41,7 @@ class DebugModel extends DatabaseModel
 			return $data;
 		}
 
-		$http = HttpFactory::getHttp();
-
-		$response = $http->get($url);
-
-		if ($response->code != 200)
-		{
-			throw new \RuntimeException('網址無法存取');
-		}
-
-		if (!$data->graph_id || $this['fb.refresh'])
+		if (!$data->url || !$data->graph_id || $this['fb.refresh'])
 		{
 			$fb = Ioc::getFBAnalysis();
 			$fb->init()->get($url);
@@ -59,10 +50,19 @@ class DebugModel extends DatabaseModel
 
 			$data->graph_id = $object->getProperty('id');
 			$data->graph_object = json_encode($object->asArray());
+
+			$http = HttpFactory::getHttp();
+			$response = $http->get($url);
+
+			if ($response->code != 200)
+			{
+				throw new \RuntimeException('網址無法存取');
+			}
+
+			$data->url = $url;
+			$data->html = $response->body;
 		}
 
-		$data->url = $url;
-		$data->html = $response->body;
 		$data->last_search = DateHelper::format('now');
 		$data->searches += 1;
 
