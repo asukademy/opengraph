@@ -39,7 +39,8 @@ class DebugHtmlView extends BladeHtmlView
 			$data->preview_uri = new Uri($data->q);
 
 			$analysis = new Analysis;
-			$analysis->parse($data->item->html);
+			$analysis->setUrl($data->q)
+				->parse($data->item->html);
 
 			$data->analysis = $analysis;
 
@@ -105,6 +106,7 @@ class DebugHtmlView extends BladeHtmlView
 		if (!count($imgs))
 		{
 			$imgs = $analysis->getImages();
+			$imgs = $analysis->addImageBase($imgs);
 			$og->images->score = 10;
 			$og->images->warning = true;
 

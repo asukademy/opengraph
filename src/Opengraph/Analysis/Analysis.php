@@ -150,6 +150,8 @@ class Analysis
 		$images = $this->dom->find('img');
 
 		$this->images = $this->addImageBase($images);
+
+		$this->images = array_slice($this->images, 0, 10);
 	}
 
 	/**
@@ -162,17 +164,11 @@ class Analysis
 	public function addImageBase($images)
 	{
 		$uri = new Uri($this->url);
-		$i = 1;
 
 		$tmp = [];
 
 		foreach ($images as $image)
 		{
-			if ($i >= 10)
-			{
-				break;
-			}
-
 			$src = $image->src;
 
 			if ($src)
@@ -190,8 +186,6 @@ class Analysis
 			}
 
 			$tmp[] = new Data(['src' => $src]);
-
-			$i++;
 		}
 
 		return $tmp;
@@ -302,5 +296,19 @@ class Analysis
 	public function getDom()
 	{
 		return $this->dom;
+	}
+
+	/**
+	 * Method to set property url
+	 *
+	 * @param   string $url
+	 *
+	 * @return  static  Return self to support chaining.
+	 */
+	public function setUrl($url)
+	{
+		$this->url = $url;
+
+		return $this;
 	}
 }
