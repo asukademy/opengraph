@@ -24,7 +24,7 @@ class ResultHelper
 	 */
 	public static function getScoreLabel($score)
 	{
-		if ($score >= 95)
+		if ($score >= 90)
 		{
 			return 'label-success';
 		}

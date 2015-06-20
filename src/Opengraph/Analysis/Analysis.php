@@ -15,6 +15,7 @@ use Windwalker\Data\Data;
 use Windwalker\Dom\HtmlElement;
 use Windwalker\Dom\HtmlElements;
 use Windwalker\Filesystem\File;
+use Windwalker\Uri\Uri;
 use Windwalker\Utilities\ArrayHelper;
 
 /**
@@ -24,6 +25,13 @@ use Windwalker\Utilities\ArrayHelper;
  */
 class Analysis
 {
+	/**
+	 * Property url.
+	 *
+	 * @var  string
+	 */
+	protected $url;
+
 	/**
 	 * Property dom.
 	 *
@@ -52,6 +60,13 @@ class Analysis
 	 */
 	protected $images;
 
+	/**
+	 * Property title.
+	 *
+	 * @var  string
+	 */
+	protected $title;
+
 	public function __construct()
 	{
 		$this->dom = new Dom;
@@ -66,6 +81,8 @@ class Analysis
 	 */
 	public function parse($url)
 	{
+		$this->url = $url;
+
 		// Cache
 		$file = new \SplFileInfo(WINDWALKER_CACHE . '/html/' . md5($url) . '.html');
 
@@ -129,7 +146,15 @@ class Analysis
 			if (strpos($meta->property, 'og:') !== false || strpos($meta->property, 'admin:') !== false)
 			{
 				$metadata['facebook'][] = $meta;
-				$this->opengraphs[$meta->property] = $meta;
+
+				if ($meta->property == 'og:image')
+				{
+					$this->opengraphs[$meta->property][] = $meta;
+				}
+				else
+				{
+					$this->opengraphs[$meta->property] = $meta;
+				}
 			}
 
 			if (strpos($meta->property, 'twitter:') !== false)
@@ -141,9 +166,66 @@ class Analysis
 		$this->metas = $metadata;
 	}
 
+	/**
+	 * parseImages
+	 *
+	 * @return  Dom\HtmlNode[]
+	 */
 	protected function parseImages()
 	{
-		$this->images = $this->images ? : $this->dom->find('img');
+		if ($this->images)
+		{
+			return;
+		}
+
+		$images = $this->dom->find('img');
+
+		$this->images = $this->addImageBase($images);
+	}
+
+	/**
+	 * addImageBase
+	 *
+	 * @param HtmlNode[] $images
+	 *
+	 * @return  HtmlNode[]
+	 */
+	public function addImageBase($images)
+	{
+		$uri = new Uri($this->url);
+		$i = 1;
+
+		$tmp = [];
+
+		foreach ($images as $image)
+		{
+			if ($i >= 10)
+			{
+				break;
+			}
+
+			$src = $image->src;
+
+			if ($src)
+			{
+				if ($src[0] == '/')
+				{
+					$src = $uri->toString(['scheme', 'user', 'pass', 'host', 'port']) . $src;
+				}
+				elseif (strpos($src, 'http') !== 0)
+				{
+					$base = dirname($uri->toString());
+
+					$src = $base . '/' . $src;
+				}
+			}
+
+			$tmp[] = new Data(['src' => $src]);
+
+			$i++;
+		}
+
+		return $tmp;
 	}
 
 	/**
@@ -168,6 +250,32 @@ class Analysis
 	}
 
 	/**
+	 * findMetaContent
+	 *
+	 * @param string $type
+	 * @param string $name
+	 *
+	 * @return  HtmlNode|Data
+	 */
+	public function findMeta($type, $name)
+	{
+		if (!isset($this->metas[$type]))
+		{
+			return null;
+		}
+
+		foreach ($this->metas[$type] as $meta)
+		{
+			if ($meta->property == $name || $meta->name == $name)
+			{
+				return $meta;
+			}
+		}
+
+		return new Data;
+	}
+
+	/**
 	 * Method to get property Images
 	 *
 	 * @return  HtmlNode[]
@@ -177,6 +285,29 @@ class Analysis
 		$this->parseImages();
 
 		return $this->images;
+	}
+
+	/**
+	 * getTitle
+	 *
+	 * @return  string
+	 */
+	public function getTitle()
+	{
+		if ($this->title)
+		{
+			return $this->title;
+		}
+
+		/** @var HtmlNode[] $title */
+		$title = $this->dom->find('head title');
+
+		if (!count($title))
+		{
+			return null;
+		}
+
+		return $this->title = $title[0]->text;
 	}
 
 	/**
@@ -192,5 +323,15 @@ class Analysis
 		$this->parseMetas();
 
 		return ArrayHelper::getValue($this->opengraphs, $name, $default ? : new Data);
+	}
+
+	/**
+	 * Method to get property Dom
+	 *
+	 * @return  Dom
+	 */
+	public function getDom()
+	{
+		return $this->dom;
 	}
 }
