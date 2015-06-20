@@ -12,7 +12,9 @@ use Facebook\FacebookRequest;
 use Facebook\FacebookSession;
 use Facebook\GraphObject;
 use Facebook\HttpClients\FacebookGuzzleHttpClient;
+use Joomla\Http\HttpFactory;
 use Opengraph\Facebook\FacebookJoomlaHttpClient;
+use Windwalker\Ioc;
 
 /**
  * The FacebookAnalysis class.
@@ -75,10 +77,20 @@ class FacebookAnalysis
 	 */
 	public function init()
 	{
+		if ($this->session)
+		{
+			return $this;
+		}
+
 		FacebookSession::setDefaultApplication($this->id, $this->secret);
 		FacebookRequest::setHttpClientHandler(new FacebookJoomlaHttpClient);
 
-		$this->session = new FacebookSession('1114955295184483|goafukZ6p1pmlLugmhY3CFC_pCc');
+//		$http = HttpFactory::getHttp();
+//		$response = $http->get('https://graph.facebook.com/v2.3/oauth/access_token?client_id=' . $this->id . '&client_secret=' . $this->secret . '&grant_type=client_credentials');
+//
+//		$result = json_decode($response->body);
+
+		$this->session = new FacebookSession(Ioc::getConfig()->get('facebook.token'));
 
 		return $this;
 	}
@@ -94,7 +106,14 @@ class FacebookAnalysis
 	 */
 	public function parse($url)
 	{
-		$request = new FacebookRequest($this->session, 'GET', '/?id=' . urlencode($url), []);
+		$this->init();
+
+		$query = [
+			'id' => $url,
+			'access_token' => $this->session->getAccessToken()
+		];
+
+		$request = new FacebookRequest($this->session, 'GET', '/?' . http_build_query($query), []);
 
 		$response = $request->execute();
 		$graphObject = $response->getGraphObject();
@@ -116,6 +135,8 @@ class FacebookAnalysis
 	 */
 	public function get($url)
 	{
+		$this->init();
+
 		if (!is_numeric($url))
 		{
 			$this->parse($url);
@@ -128,7 +149,7 @@ class FacebookAnalysis
 			$id = $url;
 		}
 
-		$request = new FacebookRequest($this->session, 'POST', '/' . $id);
+		$request = new FacebookRequest($this->session, 'POST', '/' . $id . '?access_token=' . $this->session->getAccessToken());
 
 		$response = $request->execute();
 		$graphObject = $response->getGraphObject();
