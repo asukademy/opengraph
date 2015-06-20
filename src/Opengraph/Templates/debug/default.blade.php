@@ -1,9 +1,9 @@
 {{-- Part of og project. --}}
 @extends('_global.html')
 
-@section('siteTitle')網址: {{{ $q }}} 分析結果 | Facebook Open Graph 與 SEO 檢測器 (Debugger)@stop
-
 @if ($q)
+    @section('siteTitle')網址: {{{ $q }}} 分析結果 | Facebook Open Graph 與 SEO 檢測器 (Debugger)@stop
+
     @section('meta')
 <meta name="description" content="{{{ $fb->description ? : $analysis->findMeta('general', 'description')->content }}}" />
     @stop
