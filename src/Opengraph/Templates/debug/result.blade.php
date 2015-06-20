@@ -171,7 +171,7 @@
                             @else
                                 <small><span class="text-success glyphicon glyphicon-ok"></span></small>
                             @endif
-                            <a target="_blank" href="{{{ $og->url->content }}}">{{{ $og->url->content }}}</a>
+                            <a rel="nofollow" target="_blank" href="{{{ $og->url->content }}}">{{{ $og->url->content }}}</a>
                         @else
                             <span class="text-danger">
                                 <span class="glyphicon glyphicon-warning-sign"></span> 您的頁面沒有提供這項資訊
@@ -195,7 +195,7 @@
                                 <small><span class="text-success glyphicon glyphicon-ok"></span></small>
                             @endif
                             @foreach($og->images->content as $image)
-                                <a target="_blank" href="{{{ $image }}}">
+                                <a rel="nofollow" target="_blank" href="{{{ $image }}}">
                                     <img style="max-width: 48px; max-height: 48px;" src="{{{ $image }}}" alt="img" />
                                 </a>
                             @endforeach
@@ -248,6 +248,8 @@
         <fieldset>
             <legend>建議您還可以加上的 Opengraph 標籤</legend>
             <textarea class="form-control" disabled style="cursor: text ;font-family: 'Source Code Pro', Monaco, Consolas, 'Lucida Console', monospace" cols="30" rows="10">{{{ $recommend }}}</textarea>
+            <br />
+            <p>將這些 Meta 標籤複製到您網站上的 <code>{{{ htmlspecialchars('<head>') }}}</code> 區塊內 </p>
         </fieldset>
     </div>
 </div>

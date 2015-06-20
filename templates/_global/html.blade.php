@@ -3,11 +3,15 @@
 <html lang="zh-tw">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('siteTitle', 'Facebook Open Graph 與 SEO 檢測器 (Debugger)')</title>
 
-    <link rel="shortcut icon" type="image/x-icon" href="{{ $uri['base.path'] }}media/images/favicon.ico" />
-    <meta name="generator" content="Formosa | Windwalker Framework" />
-    @yield('meta')
+    <link rel="shortcut icon" type="image/x-icon" href="http://simular.co/templates/tz_jollyany_joomla/favicon.ico" />
+    <meta name="generator" content="The Time Machine" />
+    <meta property="og:image" content="http://i.imgur.com/GkzZm1B.jpg" />
+    @section('meta')
+    <meta name="description" content="這個工具會幫您確認是否有足夠的 Opengraph 資訊能夠呈現優良的 Facebook 社群分享內容。若發現資訊不足，我們會嘗試從頁面上取得的資料給您適當的 Opengraph 建議。" />
+    @show
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ $uri['base.path'] }}media/css/main.css" />
@@ -28,12 +32,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ $uri['base.path'] }}">Windwalker</a>
+                <a class="navbar-brand" href="{{ $uri['base.path'] }}">Facebook Open Graph 與 SEO 檢測器 (Debugger)</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                      @section('nav')
-                        <li class="active"><a href="{{ $uri['base.path'] }}">Home</a></li>
+                        <li class="active"><a href="{{ $uri['base.path'] }}">首頁</a></li>
+                        <li><a target="_blank" href="http://simular.co/tools/keyword">關鍵字排名查詢</a></li>
+                        <li><a target="_blank" href="http://simular.co/tools/rwd">RWD 測試工具</a></li>
                      @show
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -56,12 +62,23 @@
                     <hr />
 
                     <footer>
-                        &copy; Windwalker {{ $datetime->format('Y') }}
+                        &copy; Powered by <a href="http://simular.co" target="_blank">Simular</a> {{ $datetime->format('Y') }}
                     </footer>
                 </div>
             </div>
         </div>
     </div>
     @show
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-59448570-9', 'auto');
+        ga('send', 'pageview');
+
+    </script>
 </body>
 </html>

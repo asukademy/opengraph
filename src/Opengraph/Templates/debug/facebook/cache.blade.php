@@ -50,7 +50,7 @@
         <td>
             @foreach((array) $fb->image as $image)
             <a target="_blank" href="{{{ $image->url }}}">
-                <img style="max-height: 48px; max-width: 48px;" src="{{{ $image->url }}}" alt="{{{ $image->alt ? : 'Image' }}}" />
+                <img style="max-height: 48px; max-width: 48px;" src="{{{ $image->url }}}" alt="{{{ $image->alt ? : 'Image' }}}" rel="nofollow" />
             </a>
             @endforeach
         </td>

@@ -36,6 +36,11 @@ class DebugModel extends DatabaseModel
 	{
 		$data = $this->get($url);
 
+		if ($data->url && $data->graph_id)
+		{
+			return $data;
+		}
+
 		$http = HttpFactory::getHttp();
 
 		$response = $http->get($url);
