@@ -11,6 +11,10 @@
 
 @section('body')
     <div class="container">
+        {{ (new \Windwalker\Core\Widget\Widget('windwalker.message.default'))->render(['flashes' => $flashes]) }}
+    </div>
+
+    <div class="container">
         <div class="row">
             <div class="col-md-9 col-md-offset-1">
                 <form action="{{{ $router->buildHtml('debug') }}}" method="post">
