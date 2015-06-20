@@ -34,7 +34,7 @@
         <th>類型</th>
         <td><code>og:type</code></td>
         <td>
-            {{{ $fb->website }}}
+            {{{ $fb->type }}}
         </td>
     </tr>
     <tr>
