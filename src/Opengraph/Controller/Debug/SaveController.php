@@ -8,8 +8,13 @@
 
 namespace Opengraph\Controller\Debug;
 
+use Joomla\Http\HttpFactory;
 use Opengraph\Analysis\Analysis;
+use Opengraph\Analysis\FacebookAnalysis;
+use Opengraph\Model\DebugModel;
 use Windwalker\Core\Controller\Controller;
+use Windwalker\Data\Data;
+use Windwalker\Uri\Uri;
 use Windwalker\Validator\Rule\UrlValidator;
 
 /**
@@ -27,6 +32,7 @@ class SaveController extends Controller
 	protected function doExecute()
 	{
 		$url = $this->input->post->getUrl('q');
+		$refreshFB = $this->input->post->get('refresh_fb', 0);
 
 		$url = trim($url);
 
@@ -42,8 +48,25 @@ class SaveController extends Controller
 			return $this->backToHome('不是正確的網址格式');
 		}
 
-		$analysis = new Analysis;
-		$analysis->parse($url);
+		/** @var DebugModel $model */
+		$model = $this->getModel();
+
+		try
+		{
+			$model['fb.refresh'] = $refreshFB;
+
+			$model->save($url);
+		}
+		catch (\Exception $e)
+		{
+			if (WINDWALKER_DEBUG)
+			{
+				throw $e;
+			}
+
+			return $this->backToHome($e->getMessage());
+		}
+
 
 		$this->setRedirect($this->package->router->buildHtml('debug', ['q' => $url]));
 
@@ -59,6 +82,6 @@ class SaveController extends Controller
 	 */
 	protected function backToHome($msg)
 	{
-		return $this->setRedirect($this->package->router->buildHttp('debug'), $msg);
+		return $this->setRedirect($this->package->router->buildHttp('debug', ['q' => $this->input->getUrl('q')]), $msg);
 	}
 }

@@ -9,14 +9,11 @@
 namespace Opengraph\View\Debug;
 
 use Opengraph\Analysis\Analysis;
-use Opengraph\Analysis\FacebookAnalysis;
 use Opengraph\Helper\DateHelper;
 use Opengraph\Helper\ResultHelper;
 use Windwalker\Core\View\BladeHtmlView;
 use Windwalker\Data\Data;
 use Windwalker\Dom\HtmlElement;
-use Windwalker\Dom\HtmlElements;
-use Windwalker\Ioc;
 use Windwalker\Utilities\ArrayHelper;
 
 /**
@@ -35,26 +32,20 @@ class DebugHtmlView extends BladeHtmlView
 	 */
 	protected function prepareData($data)
 	{
-		$data->item = new Data;
-
-		$config = Ioc::getConfig();
-
-		if ($data->q)
+		if ($data->item->notNull())
 		{
+			$data->item->graph_object = json_decode($data->item->graph_object);
+
 			$analysis = new Analysis;
-			$analysis->parse($data->q);
+			$analysis->parse($data->item->html);
 
 			$data->analysis = $analysis;
 
 			$this->prepareOpengraph($data, $analysis);
 
+			$this->prepareFacebook($data, $data->item->graph_object);
 
-			$fb = new FacebookAnalysis($config->get('facebook.id'), $config->get('facebook.secret'));
-			$fb->init()->get($data->q);
-
-			$this->prepareFacebook($data, $fb);
-
-			$this->prepareRecommend($data, $analysis, $fb);
+			$this->prepareRecommend($data, $analysis);
 		}
 	}
 
@@ -141,18 +132,16 @@ class DebugHtmlView extends BladeHtmlView
 	/**
 	 * prepareFacebook
 	 *
-	 * @param Data             $data
-	 * @param FacebookAnalysis $fbAnalysis
+	 * @param Data  $data
+	 * @param mixed $object
 	 *
 	 * @return  void
 	 */
-	protected function prepareFacebook(Data $data, FacebookAnalysis $fbAnalysis)
+	protected function prepareFacebook(Data $data, $object)
 	{
 		$fb = new Data;
 
-		$object = $fbAnalysis->getGraphObject();
-
-		foreach ($object->asArray() as $key => $value)
+		foreach ((array) $object as $key => $value)
 		{
 			$fb->$key = $value;
 		}
@@ -168,7 +157,15 @@ class DebugHtmlView extends BladeHtmlView
 		$data->fb = $fb;
 	}
 
-	protected function prepareRecommend(Data $data, Analysis $analysis, FacebookAnalysis $fbAnalysis)
+	/**
+	 * prepareRecommend
+	 *
+	 * @param Data     $data
+	 * @param Analysis $analysis
+	 *
+	 * @return  void
+	 */
+	protected function prepareRecommend(Data $data, Analysis $analysis)
 	{
 		$recommend = [];
 
@@ -213,7 +210,7 @@ class DebugHtmlView extends BladeHtmlView
 			]);
 		}
 
-		if (!count($analysis->getOpengraph('og:images')))
+		if (!count($analysis->getOpengraph('og:image')))
 		{
 			$dom = $analysis->getDom();
 
@@ -237,6 +234,13 @@ class DebugHtmlView extends BladeHtmlView
 			}
 		}
 
-		$data->recommend = implode("\n", $recommend);
+		$recommend = implode("\n", $recommend);
+
+		if (!trim($recommend))
+		{
+			$recommend = '恭喜您，您不需增加任何的 Opengraph 標籤';
+		}
+
+		$data->recommend = $recommend;
 	}
 }

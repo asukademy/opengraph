@@ -6,14 +6,23 @@
 @section('body')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-9 col-md-offset-1">
                 <form action="{{{ $router->buildHtml('debug') }}}" method="post">
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="q" value="{{{ $q }}}" placeholder="輸入檢測網址...">
+                    <div class="row">
+                        <div class="input-group col-md-9 pull-left">
+                            <input type="text" class="form-control" name="q" value="{{{ $q }}}" placeholder="輸入檢測網址...">
                     <span class="input-group-btn">
                         <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-wrench"></span> 檢測</button>
                     </span>
-                    </div><!-- /input-group -->
+                        </div><!-- /input-group -->
+
+                        <div class="col-md-3 pull-right">
+                            <button class="btn btn-success" type="button" onclick="this.form.refresh_fb.value=1;this.form.submit();">
+                                <span class="glyphicon glyphicon-refresh"></span> 刷新 FB 快取
+                            </button>
+                        </div>
+                    </div>
+                    <input name="refresh_fb" type="hidden" value="0" />
                 </form>
             </div>
         </div>

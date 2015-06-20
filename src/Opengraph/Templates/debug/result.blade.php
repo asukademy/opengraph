@@ -25,7 +25,7 @@
                 <tbody>
                 <tr>
                     <th width="80">檢測分數</th>
-                    <td><span class="label {{{ $score_label }}}">{{{ $score }}} / 100</span></td>
+                    <td><span class="label {{{ $score_label }}}" style="font-size: 18px;">{{{ $score }}} / 100</span></td>
                     <td></td>
                 </tr>
                 <tr>

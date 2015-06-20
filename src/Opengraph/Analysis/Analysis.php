@@ -75,46 +75,15 @@ class Analysis
 	/**
 	 * parse
 	 *
-	 * @param string $url
+	 * @param string $html
 	 *
-	 * @return  $this
+	 * @return  static
 	 */
-	public function parse($url)
+	public function parse($html)
 	{
-		$this->url = $url;
-
-		// Cache
-		$file = new \SplFileInfo(WINDWALKER_CACHE . '/html/' . md5($url) . '.html');
-
-		if (is_file($file->getPathname()))
-		{
-			$html = file_get_contents($file->getPathname());
-		}
-		else
-		{
-			$html = $this->download($url, $file)->body;
-
-			File::write($file->getPathname(), $html);
-		}
-
 		$this->dom->load($html);
 
 		return $this;
-	}
-
-	/**
-	 * download
-	 *
-	 * @param string       $url
-	 * @param \SplFileInfo $file
-	 *
-	 * @return  \Joomla\Http\Response
-	 */
-	protected function download($url, \SplFileInfo $file)
-	{
-		$http = HttpFactory::getHttp([], 'curl');
-
-		return $http->get($url);
 	}
 
 	/**

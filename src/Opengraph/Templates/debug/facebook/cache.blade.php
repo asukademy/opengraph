@@ -48,7 +48,7 @@
     <tr>
         <th>圖片</th>
         <td>
-            @foreach($fb->image as $image)
+            @foreach((array) $fb->image as $image)
             <a target="_blank" href="{{{ $image->url }}}">
                 <img style="max-height: 32px; max-width: 32px;" src="{{{ $image->url }}}" alt="{{{ $image->alt ? : 'Image' }}}" />
             </a>

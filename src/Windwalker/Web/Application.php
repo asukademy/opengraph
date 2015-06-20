@@ -8,6 +8,7 @@
 
 namespace Windwalker\Web;
 
+use Opengraph\Facebook\FacebookProvider;
 use Windwalker\Core\Application\WebApplication;
 use Windwalker\Core\Provider\AuthenticateProvider;
 use Windwalker\Core\Provider\CacheProvider;
@@ -69,6 +70,7 @@ class Application extends WebApplication
 		$providers['cache']    = new CacheProvider;
 		$providers['session']  = new SessionProvider;
 		$providers['auth']     = new AuthenticateProvider;
+		$providers['fb']     = new FacebookProvider;
 
 		/*
 		 * Custom Providers:

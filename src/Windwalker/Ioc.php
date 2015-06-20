@@ -8,6 +8,8 @@
 
 namespace Windwalker;
 
+use Opengraph\Analysis\FacebookAnalysis;
+
 /**
  * The Ioc class.
  * 
@@ -15,4 +17,13 @@ namespace Windwalker;
  */
 abstract class Ioc extends \Windwalker\Core\Ioc
 {
+	/**
+	 * getFBAnalysis
+	 *
+	 * @return  FacebookAnalysis
+	 */
+	public static function getFBAnalysis()
+	{
+		return static::get('fb.analysis');
+	}
 }

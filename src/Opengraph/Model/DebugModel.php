@@ -8,8 +8,15 @@
 
 namespace Opengraph\Model;
 
+use Joomla\Http\HttpFactory;
+use Opengraph\Analysis\FacebookAnalysis;
+use Opengraph\Helper\DateHelper;
+use Opengraph\Table\Table;
 use PHPHtmlParser\Dom;
 use Windwalker\Core\Model\DatabaseModel;
+use Windwalker\Data\Data;
+use Windwalker\DataMapper\DataMapper;
+use Windwalker\Ioc;
 
 /**
  * The DebugModel class.
@@ -18,32 +25,84 @@ use Windwalker\Core\Model\DatabaseModel;
  */
 class DebugModel extends DatabaseModel
 {
-	public function getItem()
+	/**
+	 * save
+	 *
+	 * @param $url
+	 *
+	 * @return bool
+	 */
+	public function save($url)
 	{
+		$data = $this->get($url);
 
+		$http = HttpFactory::getHttp();
+
+		$response = $http->get($url);
+
+		if ($response->code != 200)
+		{
+			throw new \RuntimeException('網址無法存取');
+		}
+
+		if (!$data->graph_id || $this['fb.refresh'])
+		{
+			$fb = Ioc::getFBAnalysis();
+			$fb->init()->get($url);
+
+			$object = $fb->getGraphObject();
+
+			$data->graph_id = $object->getProperty('id');
+			$data->graph_object = json_encode($object->asArray());
+		}
+
+		$data->url = $url;
+		$data->html = $response->body;
+		$data->last_search = DateHelper::format('now');
+		$data->searches += 1;
+
+		// Create
+		if (!$data->id)
+		{
+			$data->created = DateHelper::format('now');
+		}
+		// Update
+		else
+		{
+
+		}
+
+		$this->getDataMapper()->saveOne($data, 'id');
+
+		return true;
 	}
 
 	/**
-	 * getHtml
+	 * get
 	 *
-	 * @return  string
+	 * @param string $url
+	 *
+	 * @return  Data
 	 */
-	public function getHtml()
+	public function get($url)
 	{
-		return file_get_contents(WINDWALKER_TEMP . '/test.html');
+		$mapper = $this->getDataMapper();
+
+		if (!$url)
+		{
+			return new Data;
+		}
+
+		return $mapper->findOne(['url' => $url]);
 	}
 
 	/**
-	 * getDom
+	 * getDataMapper
 	 *
-	 * @return  Dom
+	 * @return  DataMapper
 	 */
-	public function getDom()
+	protected function getDataMapper()
 	{
-		$dom = new Dom;
-
-		$dom->load($this->getHtml());
-
-		return $dom;
+		return new DataMapper(Table::RESULTS);
 	}
 }
