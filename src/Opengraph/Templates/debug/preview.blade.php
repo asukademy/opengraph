@@ -10,6 +10,7 @@
         width: 470px;
         height: 246px;
         background-size: cover;
+        background-position: center center;
     }
     .preview-text-box-inner {
         margin-bottom: 10px;

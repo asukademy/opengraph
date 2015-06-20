@@ -128,7 +128,7 @@ class FacebookAnalysis
 			$id = $url;
 		}
 
-		$request = new FacebookRequest($this->session, 'GET', '/' . $id);
+		$request = new FacebookRequest($this->session, 'POST', '/' . $id);
 
 		$response = $request->execute();
 		$graphObject = $response->getGraphObject();
