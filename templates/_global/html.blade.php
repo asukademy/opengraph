@@ -8,7 +8,7 @@
 
     <link rel="shortcut icon" type="image/x-icon" href="http://simular.co/templates/tz_jollyany_joomla/favicon.ico" />
     <meta name="generator" content="The Time Machine" />
-    <meta property="og:image" content="http://i.imgur.com/GkzZm1B.jpg" />
+    <meta property="og:image" content="http://i.imgur.com/iWu7003.jpg" />
     <meta property="og:site_name" content="Facebook Open Graph 與 SEO 檢測器 (Debugger)" />
     <meta property="og:url" content="{{{ $uri['current'] }}}" />
     @section('meta')
