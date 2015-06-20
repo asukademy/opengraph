@@ -46,7 +46,7 @@
     </tr>
     <tr>
         <th>頁面網址</th>
-        <td><code>og:utl</code></td>
+        <td><code>og:url</code></td>
         <td>
             {{{ $fb->url }}}
         </td>
