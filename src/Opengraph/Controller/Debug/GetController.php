@@ -36,16 +36,6 @@ class GetController extends Controller
 		/** @var DebugModel $model */
 		$model = $this->getModel();
 
-		if ($url)
-		{
-			$urlValidator = new UrlValidator;
-
-			if (!$urlValidator->validate($url))
-			{
-				return $this->backToHome('不是正確的網址格式');
-			}
-		}
-
 		$view['q'] = $url ? : null;
 
 		$view['item'] = $model->get($url);

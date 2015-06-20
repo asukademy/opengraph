@@ -1,7 +1,7 @@
 {{-- Part of og project. --}}
 @extends('_global.html')
 
-@if ($q)
+@if ($item->notNull())
     @section('siteTitle')網址: {{{ $q }}} 分析結果 | Facebook Open Graph 與 SEO 檢測器 (Debugger)@stop
 
     @section('meta')
