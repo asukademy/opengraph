@@ -46,7 +46,7 @@ class FacebookJoomlaHttpClient implements FacebookHttpable
 	/**
 	 * @param Http  $http Joomla http
 	 */
-	public function __construct(Http $http)
+	public function __construct(Http $http = null)
 	{
 		static::$http = $http ?: HttpFactory::getHttp([], 'curl');
 	}
