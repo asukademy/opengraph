@@ -36,7 +36,7 @@ class DebugModel extends DatabaseModel
 	{
 		$data = $this->get($url);
 
-		if ($data->url && $data->graph_id)
+		if ($data->url && $data->graph_id && !$this['fb.refresh'])
 		{
 			return $data;
 		}

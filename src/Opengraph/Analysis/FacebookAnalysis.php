@@ -12,7 +12,6 @@ use Facebook\FacebookRequest;
 use Facebook\FacebookSession;
 use Facebook\GraphObject;
 use Facebook\HttpClients\FacebookGuzzleHttpClient;
-use Opengraph\Facebook\FacebookJoomlaHttpClient;
 
 /**
  * The FacebookAnalysis class.
@@ -76,7 +75,7 @@ class FacebookAnalysis
 	public function init()
 	{
 		FacebookSession::setDefaultApplication($this->id, $this->secret);
-		FacebookRequest::setHttpClientHandler(new FacebookJoomlaHttpClient);
+		FacebookRequest::setHttpClientHandler(new FacebookGuzzleHttpClient);
 
 		$this->session = new FacebookSession('1114955295184483|goafukZ6p1pmlLugmhY3CFC_pCc');
 
