@@ -35,6 +35,7 @@ class SaveController extends Controller
 		$refreshFB = $this->input->post->get('refresh_fb', 0);
 
 		$url = trim($url);
+		$url = trim($url, '/');
 
 		if (!$url)
 		{
