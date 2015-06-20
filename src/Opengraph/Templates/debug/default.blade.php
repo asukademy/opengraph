@@ -16,7 +16,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-9 col-md-offset-1">
+            <div class="col-md-10 col-md-offset-1">
                 <form action="{{{ $router->buildHtml('debug') }}}" method="post">
                     <div class="row">
                         <div class="input-group col-md-9 pull-left">
@@ -26,9 +26,9 @@
                     </span>
                         </div><!-- /input-group -->
 
-                        <div class="col-md-3 pull-right">
+                        <div class="col-md-2 pull-left">
                             <button class="btn btn-success" type="button" onclick="this.form.refresh_fb.value=1;this.form.submit();">
-                                <span class="glyphicon glyphicon-refresh"></span> 刷新 FB 快取
+                                <span class="glyphicon glyphicon-refresh"></span> 刷新
                             </button>
                         </div>
                     </div>
