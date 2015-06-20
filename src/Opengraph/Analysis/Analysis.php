@@ -11,9 +11,11 @@ namespace Opengraph\Analysis;
 use Joomla\Http\HttpFactory;
 use PHPHtmlParser\Dom;
 use PHPHtmlParser\Dom\HtmlNode;
+use Windwalker\Data\Data;
 use Windwalker\Dom\HtmlElement;
 use Windwalker\Dom\HtmlElements;
 use Windwalker\Filesystem\File;
+use Windwalker\Utilities\ArrayHelper;
 
 /**
  * The Analysis class.
@@ -35,6 +37,13 @@ class Analysis
 	 * @var array
 	 */
 	protected $metas;
+
+	/**
+	 * Property opengraphs.
+	 *
+	 * @var array
+	 */
+	protected $opengraphs = [];
 
 	/**
 	 * Property images.
@@ -98,6 +107,11 @@ class Analysis
 	 */
 	protected function parseMetas()
 	{
+		if ($this->metas)
+		{
+			return;
+		}
+
 		$metas = $this->dom->find('head meta');
 
 		$metadata['general'] = [];
@@ -115,6 +129,7 @@ class Analysis
 			if (strpos($meta->property, 'og:') !== false || strpos($meta->property, 'admin:') !== false)
 			{
 				$metadata['facebook'][] = $meta;
+				$this->opengraphs[$meta->property] = $meta;
 			}
 
 			if (strpos($meta->property, 'twitter:') !== false)
@@ -162,5 +177,20 @@ class Analysis
 		$this->parseImages();
 
 		return $this->images;
+	}
+
+	/**
+	 * getOpengraph
+	 *
+	 * @param string $name
+	 * @param mixed  $default
+	 *
+	 * @return mixed
+	 */
+	public function getOpengraph($name, $default = null)
+	{
+		$this->parseMetas();
+
+		return ArrayHelper::getValue($this->opengraphs, $name, $default ? : new Data);
 	}
 }

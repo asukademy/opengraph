@@ -20,7 +20,7 @@
 
         <br /><br /><br />
 
-        @if (!$item->isNull())
+        @if (!isset($analysis))
             <p>
                 Enter the URL you want to scrape to see how the page's markup appears to Facebook. Enter an access token to see details about the token such as when it expires.
             </p>

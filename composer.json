@@ -17,7 +17,8 @@
 		"fzaninotto/faker": "~1.0@stable",
         "joomla/http": "1.*@stable",
         "paquettg/php-html-parser": "1.6.*@stable",
-        "illuminate/view": "4.*@stable"
+        "illuminate/view": "4.*@stable",
+        "facebook/php-sdk-v4" : "4.0.*"
 	},
 	"require-dev": {
 		"phpunit/phpunit-skeleton-generator": "dev-windwalker-tmpl"
