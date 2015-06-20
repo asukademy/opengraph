@@ -14,3 +14,7 @@ body {
 	height: 35px;
 	margin-top: -8px;
 }
+code {
+	background-color: #eee;
+	color: #666;
+}

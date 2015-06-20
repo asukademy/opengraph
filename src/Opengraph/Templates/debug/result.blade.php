@@ -9,12 +9,103 @@
         list-style: none;
         margin-bottom: 0.5em;
     }
+    .preview-box-wrapper {
+        display: block;
+        cursor: pointer;
+    }
+    .preview-box {
+        border: 1px solid #e9eaed;
+        width: 471px;
+        margin: 0 auto;
+        position: relative;
+    }
+    .preview-img {
+        width: 470px;
+        height: 246px;
+        background-size: cover;
+        background-image: url(https://zero-space.s3.amazonaws.com/photos/f0fc3938-c8c1-43a0-b6c6-89ec58407090.jpg);
+    }
+    .preview-text-box-inner {
+        margin-bottom: 10px;
+        margin-left: 12px;
+        margin-right: 12px;
+        margin-top: 10px;
+    }
+    .preview-title {
+        color: #141823;
+        text-decoration: none;
+        -webkit-transition: color .1s ease-in-out;
+        cursor: pointer;
+        font-family: Georgia, 'lucida grande',tahoma,verdana,arial,sans-serif;
+        font-size: 19px;
+        font-weight: 500;
+        line-height: 22px;
+        word-wrap: break-word;
+        margin-bottom: 5px;
+        max-height: 110px;
+    }
+    .preview-title a {
+        color: #141823;
+        text-decoration: none;
+        -webkit-transition: color .1s ease-in-out;
+        cursor: pointer;
+    }
+    .preview-box-link {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        height: 320px;
+        width: 100%;
+        z-index: 500;
+    }
+    .preview-desc {
+        color: rgb(78, 86, 101);
+        font-size: 13px;
+        line-height: 16px;
+        max-height: 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .preview-host {
+        -webkit-font-smoothing: antialiased;
+        color: rgb(78, 86, 101);
+        text-transform: uppercase;
+        display: block;
+        font-size: 13px;
+        line-height: 18px;
+        padding-top: 9px;
+        position: relative;
+        text-align: left;
+        word-wrap: break-word;
+    }
+
 </style>
 <div class="row">
     <div class="col-md-6">
         <fieldset>
             <legend>預覽</legend>
-            <img src="http://i.imgur.com/hC0nqOs.jpg" alt="img" />
+            <div class="preview-box">
+                <div class="preview-img">
+
+                </div>
+                <div class="preview-text-box">
+                    <div class="preview-text-box-inner">
+                        <a class="preview-box-link" href="{{{ $q }}}" rel="nofollow" target="_blank"></a>
+                        <div class="preview-title">
+                            <a href="{{{ $q }}}" rel="nofollow" target="_blank">
+                                {{{ $fb->title }}}
+                            </a>
+                        </div>
+                        <div class="preview-desc">
+                            {{{ $fb->description }}}
+                        </div>
+                        <div class="preview-host">
+                            <div class="text-muted">{{{ $preview_uri->getHost() }}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </fieldset>
     </div>
     <div class="col-md-6">
@@ -103,13 +194,11 @@
                             @else
                                 <small><span class="text-success glyphicon glyphicon-ok"></span></small>
                             @endif
-                            <ul class="og-imgs">
                             @foreach($og->images->content as $image)
-                                <li>
-                                    <a target="_blank" href="{{{ $image }}}">{{{ $image }}}</a>
-                                </li>
+                                <a target="_blank" href="{{{ $image }}}">
+                                    <img style="max-width: 48px; max-height: 48px;" src="{{{ $image }}}" alt="img" />
+                                </a>
                             @endforeach
-                            </ul>
                         @else
                             <span class="text-danger">
                                 <span class="glyphicon glyphicon-warning-sign"></span> 您的頁面沒有提供這項資訊
@@ -167,11 +256,34 @@
 
 <div class="row">
     <div class="col-md-12">
+        <h3>頁面 Metadata 詳細資訊</h3>
 
-        @include('detail.og')
+        <div>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#og" aria-controls="og" role="tab" data-toggle="tab">Facebook</a></li>
+                <li role="presentation"><a href="#twitter" aria-controls="twitter" role="tab" data-toggle="tab">Twitter</a></li>
+                <li role="presentation"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">一般 Metadata</a></li>
+                <li role="presentation"><a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab">所有 Metadata</a></li>
+            </ul>
 
-        <h4>META</h4>
-        @include('detail.meta')
+            <!-- Tab panes -->
+            <div class="tab-content" style="padding-top: 30px;">
+                <div role="tabpanel" class="tab-pane active" id="og">
+                    @include('detail.og')
+                </div>
+                <div role="tabpanel" class="tab-pane" id="twitter">
+                    @include('detail.twitter')
+                </div>
+                <div role="tabpanel" class="tab-pane" id="general">
+                    @include('detail.general')
+                </div>
+                <div role="tabpanel" class="tab-pane" id="metadata">
+                    @include('detail.meta')
+                </div>
+            </div>
+
+        </div>
 
     </div>
 </div>

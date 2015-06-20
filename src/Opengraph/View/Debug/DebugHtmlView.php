@@ -14,6 +14,7 @@ use Opengraph\Helper\ResultHelper;
 use Windwalker\Core\View\BladeHtmlView;
 use Windwalker\Data\Data;
 use Windwalker\Dom\HtmlElement;
+use Windwalker\Uri\Uri;
 use Windwalker\Utilities\ArrayHelper;
 
 /**
@@ -35,6 +36,7 @@ class DebugHtmlView extends BladeHtmlView
 		if ($data->item->notNull())
 		{
 			$data->item->graph_object = json_decode($data->item->graph_object);
+			$data->preview_uri = new Uri($data->q);
 
 			$analysis = new Analysis;
 			$analysis->parse($data->item->html);

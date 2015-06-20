@@ -1,5 +1,5 @@
 
-@if ($analysis->getMetas('facebook'))
+@if ($analysis->getMetas('general'))
 <table class="meta-table table table-bordered">
     <thead>
     <tr>
@@ -9,10 +9,10 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($analysis->getMetas('facebook') as $meta)
+    @foreach($analysis->getMetas('general') as $meta)
         <tr>
             <td>
-                <code>{{{ $meta->property }}}</code>
+                <code>{{{ $meta->name }}}</code>
             </td>
             <td>
                 {{{ $meta->content }}}

@@ -1,5 +1,5 @@
 
-@if ($analysis->getMetas('facebook'))
+@if ($analysis->getMetas('twitter'))
 <table class="meta-table table table-bordered">
     <thead>
     <tr>
@@ -9,7 +9,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($analysis->getMetas('facebook') as $meta)
+    @foreach($analysis->getMetas('twitter') as $meta)
         <tr>
             <td>
                 <code>{{{ $meta->property }}}</code>
@@ -27,7 +27,7 @@
     </tbody>
 </table>
 @else
-    <div style="height: 350px">
-        沒有資訊
-    </div>
+<div style="height: 350px">
+    沒有資訊
+</div>
 @endif
