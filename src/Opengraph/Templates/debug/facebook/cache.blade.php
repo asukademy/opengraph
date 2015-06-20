@@ -47,7 +47,7 @@
     <tr>
         <th>頁面網址</th>
         <td><code>og:url</code></td>
-        <td>
+        <td style="word-break: break-all;">
             {{{ $fb->url }}}
         </td>
     </tr>

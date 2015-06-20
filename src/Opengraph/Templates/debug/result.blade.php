@@ -61,7 +61,7 @@
                 <tr>
                     <th>頁面網址</th>
                     <td><code>og:url</code></td>
-                    <td>
+                    <td style="word-break: break-all;">
                         @if ($og->url->content)
                             @if ($og->url->warning)
                                 <div class="text-warning">
