@@ -2,7 +2,7 @@
 @extends('_global.html')
 
 @if ($item->notNull())
-    @section('siteTitle')網址: {{{ $q }}} 分析結果 | Facebook Open Graph 與 SEO 檢測器 (Debugger)@stop
+    @section('siteTitle')Open Graph 分析，網址: {{{ $q }}} 分析結果 | Facebook Open Graph 與 SEO 檢測器 (Debugger)@stop
 
     @section('meta')
 <meta name="description" content="{{{ $fb->description ? : $analysis->findMeta('general', 'description')->content }}}" />
