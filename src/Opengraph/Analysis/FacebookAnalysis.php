@@ -11,8 +11,6 @@ namespace Opengraph\Analysis;
 use Facebook\FacebookRequest;
 use Facebook\FacebookSession;
 use Facebook\GraphObject;
-use Facebook\HttpClients\FacebookGuzzleHttpClient;
-use Joomla\Http\HttpFactory;
 use Opengraph\Facebook\FacebookJoomlaHttpClient;
 use Windwalker\Ioc;
 
@@ -23,6 +21,9 @@ use Windwalker\Ioc;
  */
 class FacebookAnalysis
 {
+	const GET = 'GET';
+	const POST = 'POST';
+
 	/**
 	 * Property url.
 	 *
@@ -85,11 +86,6 @@ class FacebookAnalysis
 		FacebookSession::setDefaultApplication($this->id, $this->secret);
 		FacebookRequest::setHttpClientHandler(new FacebookJoomlaHttpClient);
 
-//		$http = HttpFactory::getHttp();
-//		$response = $http->get('https://graph.facebook.com/v2.3/oauth/access_token?client_id=' . $this->id . '&client_secret=' . $this->secret . '&grant_type=client_credentials');
-//
-//		$result = json_decode($response->body);
-
 		$this->session = new FacebookSession(Ioc::getConfig()->get('facebook.token'));
 
 		return $this;
@@ -99,12 +95,12 @@ class FacebookAnalysis
 	 * parse
 	 *
 	 * @param string $url
+	 * @param string $method
 	 *
-	 * @return  static
-	 *
+	 * @return static
 	 * @throws \Facebook\FacebookRequestException
 	 */
-	public function parse($url)
+	public function parse($url, $method = self::GET)
 	{
 		$this->init();
 
@@ -113,7 +109,7 @@ class FacebookAnalysis
 			'access_token' => $this->session->getAccessToken()
 		];
 
-		$request = new FacebookRequest($this->session, 'GET', '/?' . http_build_query($query), []);
+		$request = new FacebookRequest($this->session, $method, '/?' . http_build_query($query), []);
 
 		$response = $request->execute();
 		$graphObject = $response->getGraphObject();
@@ -127,13 +123,12 @@ class FacebookAnalysis
 	 * get
 	 *
 	 * @param string $url
-	 * @param bool   $refresh
+	 * @param string $method
 	 *
-	 * @return  $this
-	 *
+	 * @return static
 	 * @throws \Facebook\FacebookRequestException
 	 */
-	public function get($url)
+	public function get($url, $method = self::POST)
 	{
 		$this->init();
 
@@ -149,7 +144,7 @@ class FacebookAnalysis
 			$id = $url;
 		}
 
-		$request = new FacebookRequest($this->session, 'POST', '/' . $id . '?access_token=' . $this->session->getAccessToken());
+		$request = new FacebookRequest($this->session, $method, '/' . $id . '?access_token=' . $this->session->getAccessToken());
 
 		$response = $request->execute();
 		$graphObject = $response->getGraphObject();

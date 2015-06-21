@@ -10,7 +10,7 @@
     <meta name="generator" content="The Time Machine" />
     <meta property="og:image" content="http://i.imgur.com/iWu7003.jpg" />
     <meta property="og:site_name" content="Facebook Open Graph 與 SEO 檢測器 (Debugger)" />
-    <meta property="og:url" content="{{{ $uri['current'] }}}" />
+    <meta property="og:url" content="{{{ $currentUri }}}" />
     @section('meta')
     <meta property="og:description" content="這個工具會幫您確認是否有足夠的 Opengraph 資訊能夠呈現優良的 Facebook 社群分享內容。若發現資訊不足，我們會嘗試從頁面上取得的資料給您適當的 Opengraph 建議。" />
     <meta name="description" content="這個工具會幫您確認是否有足夠的 Opengraph 資訊能夠呈現優良的 Facebook 社群分享內容。若發現資訊不足，我們會嘗試從頁面上取得的資料給您適當的 Opengraph 建議。" />

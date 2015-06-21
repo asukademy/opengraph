@@ -16,5 +16,6 @@ namespace Opengraph\Table;
 class Table
 {
 	const RESULTS = 'results';
+	const OG_ERRORS = 'og_errors';
 	const LOGS = 'logs';
 }

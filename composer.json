@@ -19,7 +19,9 @@
         "paquettg/php-html-parser": "1.6.*@stable",
         "illuminate/view": "4.*@stable",
         "facebook/php-sdk-v4" : "4.0.*",
-        "guzzlehttp/guzzle": "*@stable"
+        "guzzlehttp/guzzle": "*@stable",
+        "asika/autolink": "1.*@stable",
+        "asika/sitemap": "1.*@stable"
 	},
 	"require-dev": {
 		"phpunit/phpunit-skeleton-generator": "dev-windwalker-tmpl"

@@ -2,7 +2,25 @@
     table tbody tr th {
         white-space: nowrap;
     }
+
+    a {
+        color: #888;
+    }
+    a:hover {
+        color: #666;
+    }
+
+    code a {
+        color: #222;
+    }
 </style>
+
+@if ($item->og_error)
+    @include('error')
+
+    <hr />
+@endif
+
 <div class="row">
     <div class="col-md-6">
         <fieldset>

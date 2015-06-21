@@ -1,3 +1,6 @@
 debug:
     pattern: /
     controller: Opengraph\Controller\Debug
+sitemap:
+    pattern: /sitemap
+    controller: Opengraph\Controller\Sitemap

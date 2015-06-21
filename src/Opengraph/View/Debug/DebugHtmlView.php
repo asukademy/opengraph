@@ -8,12 +8,15 @@
 
 namespace Opengraph\View\Debug;
 
+use Asika\Autolink\Autolink;
 use Opengraph\Analysis\Analysis;
 use Opengraph\Helper\DateHelper;
 use Opengraph\Helper\ResultHelper;
 use Windwalker\Core\View\BladeHtmlView;
 use Windwalker\Data\Data;
 use Windwalker\Dom\HtmlElement;
+use Windwalker\Ioc;
+use Windwalker\Registry\Registry;
 use Windwalker\Uri\Uri;
 use Windwalker\Utilities\ArrayHelper;
 
@@ -33,6 +36,9 @@ class DebugHtmlView extends BladeHtmlView
 	 */
 	protected function prepareData($data)
 	{
+		$data->currentUri = new Uri(Ioc::getConfig()->get('uri.current'));
+		$data->currentUri->setVar('q', urlencode($data->q));
+
 		if ($data->item->notNull())
 		{
 			$data->item->graph_object = json_decode($data->item->graph_object);
@@ -43,6 +49,11 @@ class DebugHtmlView extends BladeHtmlView
 				->parse($data->item->html);
 
 			$data->analysis = $analysis;
+
+			if (trim($data->item->error_msg))
+			{
+				$data->item->og_error = new Registry($data->item->error_msg);
+			}
 
 			$this->prepareOpengraph($data, $analysis);
 
@@ -246,5 +257,56 @@ class DebugHtmlView extends BladeHtmlView
 		}
 
 		$data->recommend = $recommend;
+	}
+
+	/**
+	 * render
+	 *
+	 * @return  string
+	 */
+	public function render()
+	{
+		$html = parent::render();
+
+		$html = explode('</head>', $html);
+
+		$autolink = new Autolink;
+
+		$autolink->setLinkBuilder([$this, 'buildLink']);
+
+		$html[1] = $autolink->convert($html[1], ['target' => '_blank', 'rel' => 'nofollow']);
+
+		return implode('', $html);
+	}
+
+	/**
+	 * buildLink
+	 *
+	 * @param string $url
+	 * @param array  $attribs
+	 *
+	 * @return  string|HtmlElement
+	 */
+	public function buildLink($url, $attribs)
+	{
+		$symbols = [
+			'&quot;', ',', '.', "'", '&#039;' ,'</'
+		];
+
+		foreach ($symbols as $symbol)
+		{
+			$len = strlen($symbol);
+
+			if (substr($url, -$len) == $symbol)
+			{
+				$url = substr($url, 0, -$len);
+
+				$attribs['href'] = $url;
+
+				return new HtmlElement('a', $url, $attribs) . $symbol;
+			}
+		}
+
+		return new HtmlElement('a', $url, $attribs);
 	}
 }

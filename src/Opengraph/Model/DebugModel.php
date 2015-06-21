@@ -8,6 +8,8 @@
 
 namespace Opengraph\Model;
 
+use Facebook\FacebookAuthorizationException;
+use Facebook\FacebookSDKException;
 use Joomla\Http\HttpFactory;
 use Opengraph\Analysis\FacebookAnalysis;
 use Opengraph\Helper\DateHelper;
@@ -44,7 +46,23 @@ class DebugModel extends DatabaseModel
 		if (!$data->url || !$data->graph_id || $this['fb.refresh'])
 		{
 			$fb = Ioc::getFBAnalysis();
-			$fb->init()->get($url);
+
+			$data->error_msg = null;
+
+			try
+			{
+				// Use post to refresh data
+				$fb->get($url, $fb::POST);
+			}
+			catch (FacebookAuthorizationException $e)
+			{
+				$response = $e->getResponse();
+
+				$data->error_msg = json_encode($response);
+
+				// Fallback to get old data.
+				$fb->get($url, $fb::GET);
+			}
 
 			$object = $fb->getGraphObject();
 
@@ -77,7 +95,7 @@ class DebugModel extends DatabaseModel
 
 		}
 
-		$this->getDataMapper()->saveOne($data, 'id');
+		$this->getDataMapper()->saveOne($data, 'id', DataMapper::UPDATE_NULLS);
 
 		return true;
 	}
