@@ -274,7 +274,7 @@ class DebugHtmlView extends BladeHtmlView
 
 		$autolink->setLinkBuilder([$this, 'buildLink']);
 
-		$html[1] = $autolink->convert($html[1], ['target' => '_blank', 'rel' => 'nofollow']);
+		// $html[1] = $autolink->convert($html[1], ['target' => '_blank', 'rel' => 'nofollow']);
 
 		return implode('', $html);
 	}
