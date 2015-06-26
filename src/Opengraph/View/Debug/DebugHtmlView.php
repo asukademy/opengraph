@@ -289,6 +289,11 @@ class DebugHtmlView extends BladeHtmlView
 	 */
 	public function buildLink($url, $attribs)
 	{
+		if ($url[strlen($url) - 1] == '"')
+		{
+			return $url;
+		}
+
 		$symbols = [
 			'&quot;', ',', '.', "'", '&#039;' ,'</'
 		];
