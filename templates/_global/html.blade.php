@@ -43,6 +43,7 @@
                         <li class="active"><a href="{{ $uri['base.path'] }}">首頁</a></li>
                         <li><a target="_blank" href="http://simular.co/tools/keyword">關鍵字排名查詢</a></li>
                         <li><a target="_blank" href="http://simular.co/tools/rwd">RWD 測試工具</a></li>
+                        <li><a target="_blank" href="http://simular.co/resources">網頁設計資源彙整</a></li>
                      @show
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -65,7 +66,7 @@
                     <hr />
 
                     <footer>
-                        &copy; Powered by <a href="http://simular.co" target="_blank">Simular</a> {{ $datetime->format('Y') }}
+                        &copy; Powered by <a href="http://simular.co" target="_blank">Simular - 夏木樂網頁設計</a> {{ $datetime->format('Y') }}
                     </footer>
                 </div>
             </div>
